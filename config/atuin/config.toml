@@ -1,0 +1,36 @@
+auto_sync = true
+### sync after every command
+sync_frequency = 0
+
+### activated by C-r
+filter_mode = "session"
+filter_mode_shell_up_key_binding = "directory'
+
+### enable git repository filter
+workspaces = true
+
+style = "auto"
+
+show_preview = true
+max_preview_height = 12
+
+show_tabs = true
+
+### set BUFFER to the atuin query when ESC is pressed.  (Exit with C-g to keep it as what it was before)
+exit_mode = "return-query"
+
+#TODO: remove this functionality from the codebase (perhaps replacing it with the ability to bucket entries matching some parameters)
+	history_filter = []
+	cwd_filter = []
+	secrets_filter = false
+
+keymap_mode = "emacs"
+
+[sync]
+	records = true
+
+[dotfiles]
+	enabled = true
+
+# scroll_exits
+#REF: https://docs.atuin.sh/configuration/config/

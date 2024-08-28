@@ -1,0 +1,3 @@
+My personal config for [SSH-ing into] GitHub codespaces for work
+[[https://docs.github.com/en/codespaces/setting-your-user-preferences/personalizing-github-codespaces-for-your-account#dotfiles][Per the GitHub docs]], =bootstrap.sh= kicks everything off
+Provisionally licensed under the [[./LICENSE][Reciprocal Public License, version 1.5]], though this is very much open for negotiation
