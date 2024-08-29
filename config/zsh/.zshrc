@@ -132,8 +132,10 @@ einfo() {
 
 eman() {
 	[[ $# -eq 1 ]] || return 64
-	lhr emacs -nw --eval "(woman \"$1\")"
+	lhr emacs -nw --eval "(man \"$1\")"
 }
+
+ewoman() { emacs -nw -q --eval $'(custom-set-variables \'(custom-enabled-themes \'(manoj-dark leuven)))' -f split-window-right -f other-window --eval "(woman \"$1\")" }
 
 h(){"$@" --help | bat --language=help}
 
@@ -170,10 +172,10 @@ current_time() {
 histq() {
 	if [[ -n "$1" ]] {
 		#WARNING: vulnerable to sql injection, but shouldn't matter, as this is intended to only be used locally by the user in an interactive fashion
-		sqlite3 ~[R:$XDG_DATA_HOME]/atuin/history.db --json <<<"SELECT timestamp, duration, exit, command, cwd, session FROM history h WHERE h.command  REGEXP '$1'           ORDER BY h.timestamp DESC"
+		sqlite3 "$XDG_DATA_HOME/atuin/history.db" --json <<<"SELECT timestamp, duration, exit, command, cwd, session FROM history h WHERE h.command  REGEXP '$1'           ORDER BY h.timestamp DESC"
 	} else {
  		#BORKED: still doesn't handle single quotes correctly (e.g. `histq <<<'histq <<<'\''galdl'\'` returns a parse error)
-		sqlite3 ~[R:$XDG_DATA_HOME]/atuin/history.db --json <<<"SELECT timestamp, duration, exit, command, cwd, session FROM history h WHERE h.command  == '${$(<&0)/'/''/}'  ORDER BY h.timestamp DESC"
+		sqlite3 "$XDG_DATA_HOME]/atuin/history.db" --json <<<"SELECT timestamp, duration, exit, command, cwd, session FROM history h WHERE h.command  == '${$(<&0)/'/''/}'  ORDER BY h.timestamp DESC"
 	} \
 	| jq -crC '
 		#SRC(adapted): https://stackoverflow.com/a/46308382
@@ -202,4 +204,8 @@ histq() {
 		}'
 }
 
-#CONSIDER: codespace-executable codespace sync
+
+exa__chpwd__hook() { exa --binary --classify --icons --all --color=always }
+add-zsh-hook -Uz chpwd exa__chpwd__hook
+
+#CONSIDER: some kind of codespace-triggerable codespace sync
