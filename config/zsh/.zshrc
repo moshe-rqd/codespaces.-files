@@ -212,3 +212,5 @@ exa__chpwd__hook() { exa --binary --classify --icons --all --color=always }
 add-zsh-hook -Uz chpwd exa__chpwd__hook
 
 #CONSIDER: some kind of codespace-triggerable codespace sync
+
+alias xe='LD_LIBRARY_PATH=/usr/local/lib/ TERM=xterm-256color emacs-nw --debug-init'

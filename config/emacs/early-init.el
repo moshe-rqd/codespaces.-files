@@ -1,22 +1,23 @@
-(setq package-archives nil ;;; redundant with the below, I think, but better safe than sorry
+(setq
+	package-archives nil ;;; redundant with the below, I think, but better safe than sorry
 	package-enable-at-startup nil )
 
 (let
 	((default-directory (concat user-emacs-directory "packages/")))
-	(normal-top-level-add-subdirs-to-load-path))
+	(normal-top-level-add-subdirs-to-load-path) )
 
-(eval-when-compile
-	(require 'use-package)
-	(setq use-package-compute-statistics t))
-;; (add-to-list 'load-path (concat user-emacs-directory "packages/no-littering/"))
 (setq
 	no-littering-etc-directory (expand-file-name "config/" user-emacs-directory)
 	no-littering-var-directory (expand-file-name "data/" user-emacs-directory)
-	no-littering-theme-backups t)
+	no-littering-theme-backups t )
 (require 'no-littering)
-
 (when (fboundp 'startup-redirect-eln-cache)
       (startup-redirect-eln-cache (convert-standard-filename (concat no-littering-var-directory "/eln-cache/"))))
+
+(eval-when-compile
+	(require 'use-package) )
+(setq use-package-compute-statistics t)
+
 
 (setq session-directory (concat user-emacs-directory "sessions/" (format-time-string "%Y-%m-%d--%H-%M-%S.%N") "/"))
 (make-directory session-directory)
@@ -37,7 +38,7 @@
 	;;; no maximum history count!
 	history-length t
 	;;; don't delete duplicate history entries (the default)
-	(setq history-delete-duplicates nil) )
+	history-delete-duplicates nil )
 (savehist-mode 1)
 
 (save-place-mode 1)
@@ -45,6 +46,7 @@
 (auto-save-mode 1)
 
 ;NOTE: Emacs errors if I use a higher value
+;= 2^25 - 1
 (lossage-size 33554431)
 
 
@@ -64,11 +66,22 @@
 )
 
 
-(use-package undo-tree
-	:init (let
-		((undo-dir (expand-file-name "undo" user-emacs-directory)))
-		(setq undo-tree-history-directory-alist (list (cons "." undo-dir))) )
-	:config (global-undo-tree-mode)
+(use-package undo-fu-session
 	:custom
-		(undo-tree-visualizer-timestamps t)
-		(undo-tree-visualizer-diff t) )
+		(undo-fu-session-directory (concat no-littering-var-directory "/undo/undo-fu-session"))
+		(undo-fu-session-linear nil)
+		(undo-fu-session-compression 'bz2)
+		(undo-fu-session-file-limit nil)
+		(undo-fu-session-incompatible-files '())
+		(undo-fu-session-incompatible-major-modes nil)
+		(undo-fu-session-ignore-encrypted-files ())
+		(undo-fu-session-ignore-temp-files nil)
+	:config (undo-fu-session-global-mode) )
+
+(use-package vundo
+	:custom (vundo-glyph-alist vundo-unicode-symbols) )
+
+
+(require 'keyfreq)
+(keyfreq-mode 1)
+(keyfreq-autosave-mode 1)

@@ -26,6 +26,20 @@ export LD_LIBRARY_PATH=/usr/local/lib/
 make --jobs="$(nproc)"
 
 
-mkdir "$XDG_CONFIG_HOME/emacs"/{,packages,sessions,config,data,eln-cache,themes,undo}
+mkdir "$XDG_CONFIG_HOME/emacs"/{,packages,sessions}/
+mkdir "$XDG_CONFIG_HOME/emacs"/{config,data,eln-cache,themes,undo}
 
 cp -t "$XDG_CONFIG_HOME/emacs/" -- ../config/emacs/*
+
+
+"$XDG_CONFIG_HOME/emacs/packages/"
+
+gelpa_stock_repo_clone() { for arg ("$@") git clone --verbose --branch=externals/"$arg" --single-branch https://git.savannah.gnu.org/git/emacs/elpa.git "$arg" }
+gelpa_stock_repo_clone compat
+git clone --verbose --recursive https://github.com/emacscollective/no-littering
+gelpa_stock_repo_clone vertico corfu vundo marginalia dash seq transient avy
+() { for arg ("$@") git clone --verbose --branch=elpa/"$arg" --single-branch https://git.savannah.gnu.org/git/emacs/nongnu.git "$arg" } with-editor
+git clone --verbose --recursive https://codeberg.org/ideasman42/emacs-undo-fu-session
+for arg (Wilfred/{helpful,elisp-refs} magnars/s.el rejeep/f.el bbatsov/crux magit/magit emacs-rustic/rustic dacap/keyfreq) git clone --verbose --recursive https://github.com/"$arg"
+./magit/
+make

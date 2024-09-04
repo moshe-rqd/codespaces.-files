@@ -39,3 +39,6 @@ cargo install --git=https://github.com/ogham/exa --features=vendored-openssl
 
 
 ./script/setup-emacs.zsh
+
+
+mkdir ~/trash/

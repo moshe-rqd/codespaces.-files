@@ -33,7 +33,9 @@
 		(temp-buffer-resize-mode)
 	
 	;TODO: refactor out into terminal mode-map
+	(keymap-global-unset "M-SPC")
 	:bind
+		("M-SPC M-SPC" . #'cycle-spacing) ;;; what `M-SPC' was bound to by default
 		("M-SPC C-a" . #'beginning-of-visual-line)
 		("M-SPC C-e" . #'end-of-visual-line) )
 
@@ -88,17 +90,18 @@
 
 
 (use-package kmacro
-	:custon (kmacro-ring-max most-positive-fixnum) )
+	:custom (kmacro-ring-max most-positive-fixnum) )
 
 
 (use-package avy
 	;TODO: ergonomic avy-mode-map (hard in TTY though)
 	:bind
 		;;;; functions as a drop-in replacement for `goto-line'
-		("M-g M-g" . #avy-goto-line) )
+		("M-g M-g" . avy-goto-line) )
 
 
 (use-package magit
+	:init (setq with-editor-emacsclient-executable "~/bin/emacsclient-nw")
 	:after info
 	:config
 		(info-initialize)
@@ -123,8 +126,8 @@
 		(rustic-compile-backtrace 1)
 		(compilation-scroll-output 'first-error)
 
-	:bind-keymap  ("C-c C-c C-c" 'rustic-mode-map)
-	:bind-keymap* ("C-c C-c C-m" 'rustic-mode-map)
+	:bind-keymap  ("C-c C-c C-c" . rustic-mode-map)
+	:bind-keymap* ("C-c C-c C-m" . rustic-mode-map)
 	:bind
 		; ("C-j" . #'insert-and-indent-line)
 		("C-c C-c r" . #'eglot-rename)
@@ -132,8 +135,8 @@
 
 
 (use-package eglot
-	:bind-keymap* ("C-c C-c C-l" 'eglot-mode-map)
-	:bind (:map eglot-mode-map -keymap
+	:bind-keymap* ("C-c C-c C-l" . 'eglot-mode-map)
+	:bind (:map eglot-mode-map
 		;;; meta
 			("m r" . eglot-reconnect)
 		;;; symbols
