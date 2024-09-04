@@ -125,6 +125,9 @@ alias trash='mv -b -t ~/trash/'
 
 rgft1() { rg --only-matching --replace=\$1 "$@" }
 
+### very much in muscle-memory, and so convenient besides
+mcd() { mkdir "$@" && pushd "$@[-1]" }
+
 einfo() {
 	[[ $# -eq 1 ]] || return 64
 	lhr emacs -nw --eval "(info \"$1\")"

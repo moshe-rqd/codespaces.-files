@@ -36,3 +36,6 @@ atuin gen-completions --shell=zsh --out-dir="$ZDOTDIR/completions"
 cargo install --git=https://github.com/sharkdp/bat
 
 cargo install --git=https://github.com/ogham/exa --features=vendored-openssl
+
+
+./script/setup-emacs.zsh
